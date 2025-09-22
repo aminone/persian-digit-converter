@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مبدل اعداد انگلیسی به فارسی</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/vazir-font/30.1.0/Vazir.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Vazir', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            transition: transform 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.2rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+            font-size: 1.1rem;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: inherit;
+            resize: vertical;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            background: white;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+
+        button {
+            flex: 1;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+
+        .btn-convert {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-convert:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-copy {
+            background: linear-gradient(45deg, #56ab2f, #a8e6cf);
+            color: white;
+        }
+
+        .btn-copy:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(86, 171, 47, 0.3);
+        }
+
+        .btn-clear {
+            background: linear-gradient(45deg, #ff6b6b, #ffa8a8);
+            color: white;
+        }
+
+        .btn-clear:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
+        }
+
+        .status-message {
+            text-align: center;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: 600;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .status-message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .success {
+            background: linear-gradient(45deg, #56ab2f, #a8e6cf);
+            color: white;
+        }
+
+        .info {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .stats {
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .stats h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .stat-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        .example-section {
+            background: rgba(118, 75, 162, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .example-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .example-item {
+            background: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin: 8px 0;
+            border-left: 4px solid #667eea;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+                margin: 10px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            button {
+                flex: none;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e1e5e9;
+            color: #666;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔢 مبدل اعداد انگلیسی به فارسی</h1>
+        
+        <div class="input-group">
+            <label for="inputText">متن خود را وارد کنید:</label>
+            <textarea 
+                id="inputText" 
+                placeholder="متن خود را اینجا بنویسید... مثال: سال 2023 یک سال خوب بود و 123 روز از آن را در سفر گذراندم."
+                oninput="convertText()"
+            ></textarea>
+        </div>
+
+        <div class="button-group">
+            <button class="btn-convert" onclick="convertText()">🔄 تبدیل</button>
+            <button class="btn-copy" onclick="copyResult()">📋 کپی نتیجه</button>
+            <button class="btn-clear" onclick="clearAll()">🗑️ پاک کردن</button>
+        </div>
+
+        <div id="statusMessage" class="status-message"></div>
+
+        <div class="input-group">
+            <label for="outputText">نتیجه:</label>
+            <textarea 
+                id="outputText" 
+                readonly 
+                placeholder="نتیجه تبدیل اینجا نمایش داده می‌شود..."
+            ></textarea>
+        </div>
+
+        <div class="stats">
+            <h3>📊 آمار تبدیل</h3>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number" id="totalChars">0</div>
+                    <div class="stat-label">کل کاراکترها</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="convertedDigits">0</div>
+                    <div class="stat-label">اعداد تبدیل شده</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="wordCount">0</div>
+                    <div class="stat-label">تعداد کلمات</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="example-section">
+            <h3>🔍 نمونه‌های تبدیل:</h3>
+            <div class="example-item">
+                <strong>ورودی:</strong> سال 2023 شامل 365 روز است
+            </div>
+            <div class="example-item">
+                <strong>خروجی:</strong> سال ۲۰۲۳ شامل ۳۶۵ روز است
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>💡 این ابزار تمام اعداد انگلیسی (0-9) را به معادل فارسی (۰-۹) تبدیل می‌کند</p>
+            <p>ساخته شده با ❤️ برای کاربران فارسی‌زبان</p>
+        </div>
+    </div>
+
+    <script>
+        // نقشه تبدیل اعداد انگلیسی به فارسی
+        const digitMap = {
+            '0': '۰', '1': '۱', '2': '۲', '3': '۳', '4': '۴',
+            '5': '۵', '6': '۶', '7': '۷', '8': '۸', '9': '۹'
+        };
+
+        // تابع تبدیل اعداد انگلیسی به فارسی
+        function engToFaDigits(text) {
+            return text.replace(/[0-9]/g, digit => digitMap[digit] || digit);
+        }
+
+        // تابع اصلی تبدیل
+        function convertText() {
+            const inputText = document.getElementById('inputText').value;
+            const outputText = engToFaDigits(inputText);
+            
+            document.getElementById('outputText').value = outputText;
+            updateStats(inputText, outputText);
+            
+            if (inputText.trim()) {
+                showMessage('✅ تبدیل با موفقیت انجام شد!', 'success');
+            }
+        }
+
+        // تابع کپی نتیجه به کلیپ‌بورد
+        async function copyResult() {
+            const outputText = document.getElementById('outputText').value;
+            
+            if (!outputText.trim()) {
+                showMessage('❌ ابتدا متنی را تبدیل کنید!', 'info');
+                return;
+            }
+
+            try {
+                await navigator.clipboard.writeText(outputText);
+                showMessage('✅ نتیجه به کلیپ‌بورد کپی شد!', 'success');
+            } catch (err) {
+                // برای مرورگرهای قدیمی
+                const textArea = document.createElement('textarea');
+                textArea.value = outputText;
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    showMessage('✅ نتیجه به کلیپ‌بورد کپی شد!', 'success');
+                } catch (err2) {
+                    showMessage('❌ خطا در کپی کردن!', 'info');
+                }
+                document.body.removeChild(textArea);
+            }
+        }
+
+        // تابع پاک کردن همه چیز
+        function clearAll() {
+            document.getElementById('inputText').value = '';
+            document.getElementById('outputText').value = '';
+            updateStats('', '');
+            showMessage('🗑️ همه چیز پاک شد!', 'info');
+            document.getElementById('inputText').focus();
+        }
+
+        // تابع نمایش پیام وضعیت
+        function showMessage(message, type) {
+            const messageEl = document.getElementById('statusMessage');
+            messageEl.textContent = message;
+            messageEl.className = `status-message ${type} show`;
+            
+            setTimeout(() => {
+                messageEl.classList.remove('show');
+            }, 3000);
+        }
+
+        // تابع به‌روزرسانی آمار
+        function updateStats(inputText, outputText) {
+            const totalChars = inputText.length;
+            const convertedDigits = (inputText.match(/[0-9]/g) || []).length;
+            const wordCount = inputText.trim() ? inputText.trim().split(/\s+/).length : 0;
+
+            document.getElementById('totalChars').textContent = totalChars;
+            document.getElementById('convertedDigits').textContent = convertedDigits;
+            document.getElementById('wordCount').textContent = wordCount;
+        }
+
+        // فوکوس اولیه روی ورودی
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('inputText').focus();
+        });
+
+        // کلیدهای میانبر
+        document.addEventListener('keydown', function(e) {
+            // Ctrl+Enter برای تبدیل
+            if (e.ctrlKey && e.key === 'Enter') {
+                e.preventDefault();
+                convertText();
+            }
+            // Ctrl+C برای کپی (اگر در textarea خروجی نیست)
+            else if (e.ctrlKey && e.key === 'c' && document.activeElement.id !== 'outputText') {
+                if (document.getElementById('outputText').value.trim()) {
+                    e.preventDefault();
+                    copyResult();
+                }
+            }
+            // Ctrl+D برای پاک کردن
+            else if (e.ctrlKey && e.key === 'd') {
+                e.preventDefault();
+                clearAll();
+            }
+        });
+    </script>
+</body>
+</html>
