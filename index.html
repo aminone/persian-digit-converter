@@ -94,6 +94,7 @@
             border-radius: 12px;
             font-size: 16px;
             font-weight: 600;
+            font-family: 'Vazirmatn', inherit;
             cursor: pointer;
             transition: all 0.3s ease;
             min-width: 120px;
@@ -392,9 +393,9 @@
             const convertedDigits = (inputText.match(/[0-9]/g) || []).length;
             const wordCount = inputText.trim() ? inputText.trim().split(/\s+/).length : 0;
 
-            document.getElementById('totalChars').textContent = totalChars;
-            document.getElementById('convertedDigits').textContent = convertedDigits;
-            document.getElementById('wordCount').textContent = wordCount;
+            document.getElementById('totalChars').textContent = engToFaDigits(totalChars.toString());
+            document.getElementById('convertedDigits').textContent = engToFaDigits(convertedDigits.toString());
+            document.getElementById('wordCount').textContent = engToFaDigits(wordCount.toString());
         }
 
         // فوکوس اولیه روی ورودی
