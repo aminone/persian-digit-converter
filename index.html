@@ -248,11 +248,76 @@
             color: #666;
             font-size: 0.9rem;
         }
+
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+        }
+
+        .dark-mode .container {
+            background: rgba(31, 41, 55, 0.95);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .dark-mode h1,
+        .dark-mode label,
+        .dark-mode .stats h3,
+        .dark-mode .example-section h3,
+        .dark-mode .footer {
+            color: #f3f4f6;
+        }
+
+        .dark-mode textarea {
+            background: #374151;
+            border-color: #4b5563;
+            color: #f3f4f6;
+        }
+
+        .dark-mode textarea::placeholder {
+            color: #9ca3af;
+        }
+
+        .dark-mode textarea:focus {
+            border-color: #818cf8;
+            background: #4b5563;
+            box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.2);
+        }
+
+        .dark-mode .stat-item,
+        .dark-mode .example-item {
+            background: #374151;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .dark-mode .stat-label {
+            color: #d1d5db;
+        }
+
+        .dark-mode .example-item {
+            border-left-color: #818cf8;
+        }
+
+        .dark-mode .footer {
+            border-top-color: #374151;
+        }
+
+        .theme-switcher {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            cursor: pointer;
+            font-size: 1.8rem;
+            transition: transform 0.3s ease;
+        }
+        .theme-switcher:hover {
+            transform: rotate(15deg);
+        }
     </style>
 </head>
 <body>
+    <div id="theme-switcher" class="theme-switcher" onclick="toggleTheme()">🌙</div>
     <div class="container">
-        <h1>🔢 مبدل اعداد انگلیسی به فارسی</h1>
+        <h1>🔢 مبدل هوشمند متن فارسی</h1>
         
         <div class="input-group">
             <label for="inputText">متن خود را وارد کنید:</label>
@@ -309,33 +374,33 @@
         </div>
 
         <div class="footer">
-            <p>💡 این ابزار تمام اعداد انگلیسی (0-9) را به معادل فارسی (۰-۹) تبدیل می‌کند</p>
+            <p>💡 این ابزار اعداد انگلیسی را به فارسی تبدیل کرده و حروف و اعداد عربی را اصلاح می‌کند.</p>
             <p>ساخته شده با ❤️ برای کاربران فارسی‌زبان</p>
         </div>
     </div>
 
     <script>
-        // نقشه تبدیل اعداد انگلیسی به فارسی
-        const digitMap = {
+        // نقشه تبدیل
+        const charMap = {
+            // اعداد انگلیسی به فارسی
             '0': '۰', '1': '۱', '2': '۲', '3': '۳', '4': '۴',
-            '5': '۵', '6': '۶', '7': '۷', '8': '۸', '9': '۹'
+            '5': '۵', '6': '۶', '7': '۷', '8': '۸', '9': '۹',
+            // حروف عربی به فارسی
+            'ي': 'ی', 'ك': 'ک',
+            // اعداد عربی به فارسی
+            '٤': '۴', '٥': '۵', '٦': '۶'
         };
-
-        // تابع تبدیل اعداد انگلیسی به فارسی
-        function engToFaDigits(text) {
-            return text.replace(/[0-9]/g, digit => digitMap[digit] || digit);
-        }
 
         // تابع اصلی تبدیل
         function convertText() {
             const inputText = document.getElementById('inputText').value;
-            const outputText = engToFaDigits(inputText);
+            const outputText = inputText.replace(/[0-9يك٤٥٦]/g, char => charMap[char] || char);
             
             document.getElementById('outputText').value = outputText;
             updateStats(inputText, outputText);
             
             if (inputText.trim()) {
-                showMessage('✅ تبدیل با موفقیت انجام شد!', 'success');
+                showMessage('✅ تبدیل و اصلاح با موفقیت انجام شد!', 'success');
             }
         }
 
@@ -390,17 +455,40 @@
         // تابع به‌روزرسانی آمار
         function updateStats(inputText, outputText) {
             const totalChars = inputText.length;
-            const convertedDigits = (inputText.match(/[0-9]/g) || []).length;
+            const convertedChars = (inputText.match(/[0-9يﻙ٤٥٦]/g) || []).length;
             const wordCount = inputText.trim() ? inputText.trim().split(/\s+/).length : 0;
 
-            document.getElementById('totalChars').textContent = engToFaDigits(totalChars.toString());
-            document.getElementById('convertedDigits').textContent = engToFaDigits(convertedDigits.toString());
-            document.getElementById('wordCount').textContent = engToFaDigits(wordCount.toString());
+            const toPersianDigits = (text) => text.replace(/[0-9]/g, digit => charMap[digit] || digit);
+
+            document.getElementById('totalChars').textContent = toPersianDigits(totalChars.toString());
+            document.getElementById('convertedDigits').textContent = toPersianDigits(convertedChars.toString());
+            document.getElementById('wordCount').textContent = toPersianDigits(wordCount.toString());
+            document.querySelector('.stat-label:nth-child(2)').textContent = "کاراکترهای تبدیل شده";
         }
 
-        // فوکوس اولیه روی ورودی
+        // تابع تغییر تم
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const themeSwitcher = document.getElementById('theme-switcher');
+            if (document.body.classList.contains('dark-mode')) {
+                themeSwitcher.textContent = '☀️';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeSwitcher.textContent = '🌙';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // فوکوس و تم اولیه
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('inputText').focus();
+
+            // اعمال تم ذخیره شده
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                document.getElementById('theme-switcher').textContent = '☀️';
+            }
         });
 
         // کلیدهای میانبر
